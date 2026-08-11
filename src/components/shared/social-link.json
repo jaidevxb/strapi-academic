@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_social_links",
+  "info": {
+    "displayName": "Social Link",
+    "icon": "link"
+  },
+  "attributes": {
+    "platform": {
+      "type": "enumeration",
+      "enum": ["twitter", "bluesky", "linkedin", "facebook", "website", "orcid"],
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

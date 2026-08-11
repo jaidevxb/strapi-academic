@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "team_members",
+  "info": {
+    "singularName": "team-member",
+    "pluralName": "team-members",
+    "displayName": "Team Member",
+    "description": "Researcher / staff profile migrated from WordPress"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "role": {
+      "type": "string"
+    },
+    "affiliation": {
+      "type": "string"
+    },
+    "group": {
+      "type": "enumeration",
+      "enum": ["Core team", "Advisory board", "Cooperation partners", "Collaborators", "Researchers", "Alumni"],
+      "default": "Researchers"
+    },
+    "subgroup": {
+      "type": "string",
+      "description": "Sub-heading within a group, e.g. \"LMU partners\" within Core team"
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "bio": {
+      "type": "text"
+    },
+    "email": {
+      "type": "email"
+    },
+    "socialLinks": {
+      "type": "component",
+      "component": "shared.social-link",
+      "repeatable": true
+    },
+    "legacyWpId": {
+      "type": "integer"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "description": "Position within the group/subgroup as ordered on the original WordPress listing page"
+    }
+  }
+}
