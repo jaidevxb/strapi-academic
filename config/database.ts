@@ -1,6 +1,14 @@
 import path from 'path';
+import dns from 'dns';
 import type { Core } from '@strapi/strapi';
 import { isDatabaseClientKind } from '@strapi/database';
+
+// Some hosts (e.g. Supabase's direct-connection hostname) resolve to an IPv6 address, which
+// platforms like DigitalOcean App Platform can't route outbound (ECONNREFUSED/EHOSTUNREACH).
+// Forcing IPv4 resolution here sidesteps that regardless of which host is in DATABASE_URL.
+function forceIPv4Lookup(hostname: string, options: unknown, callback: (...args: unknown[]) => void) {
+  dns.lookup(hostname, { family: 4 }, callback as (err: NodeJS.ErrnoException | null, address: string, family: number) => void);
+}
 
 const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Database => {
   const client = env('DATABASE_CLIENT', 'sqlite');
@@ -35,6 +43,7 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Database 
       client: 'postgres',
       connection: {
         connectionString: env('DATABASE_URL'),
+        lookup: forceIPv4Lookup,
         host: env('DATABASE_HOST', 'localhost'),
         port: env.int('DATABASE_PORT', 5432),
         database: env('DATABASE_NAME', 'strapi'),
